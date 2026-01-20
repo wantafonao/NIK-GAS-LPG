@@ -31,18 +31,61 @@ body{
   padding:20px;
 }
 
+/* Header dengan tombol switch */
 .header{
   background:linear-gradient(135deg,#2563eb,#1e40af);
   color:white;
   padding:20px;
   border-radius:14px;
   margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header-content {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
 }
 
 .header h1{
   margin:0;
   font-size:22px;
-  text-align: center;
+  text-align:center;
+  flex:1;
+}
+
+.switch-btn {
+  width:10%;
+  min-width:60px;
+  max-width:80px;
+  background:rgba(255,255,255,0.2);
+  border:1px solid rgba(255,255,255,0.3);
+  color:white;
+  border-radius:8px;
+  padding:8px 12px;
+  cursor:pointer;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.3s;
+}
+
+.switch-btn:hover {
+  background:rgba(255,255,255,0.3);
+  transform:scale(1.05);
+}
+
+/* VIEW 1: NIK GAS LPG */
+.view-nik {
+  display:block;
+}
+
+.view-update {
+  display:none;
 }
 
 /* Styling untuk fitur catatan penjualan */
@@ -83,6 +126,11 @@ body{
   cursor:pointer;
   font-size:12px;
   font-weight:500;
+  transition:background-color 0.2s;
+}
+
+.btn:hover {
+  opacity:0.9;
 }
 
 .btn-primary {
@@ -100,6 +148,11 @@ body{
   color:white;
 }
 
+.btn-success {
+  background:var(--success);
+  color:white;
+}
+
 .input-field {
   padding:6px 8px;
   border:1px solid var(--border);
@@ -108,6 +161,7 @@ body{
   width:100%;
   font-family:monospace;
   box-sizing:border-box;
+  background:#fff;
 }
 
 .sales-table {
@@ -141,6 +195,13 @@ body{
   font-size:11px;
   width:100%;
   box-sizing:border-box;
+  padding:5px;
+}
+
+.sales-table .action-buttons {
+  display:flex;
+  gap:3px;
+  justify-content:center;
 }
 
 .sales-table .save-btn {
@@ -151,11 +212,23 @@ body{
   padding:4px 6px;
   cursor:pointer;
   font-size:11px;
-  width:100%;
-  box-sizing:border-box;
+  min-width:40px;
+  transition:background-color 0.2s;
 }
 
-.undo-notice {
+.sales-table .delete-btn {
+  background:var(--danger);
+  color:white;
+  border:none;
+  border-radius:4px;
+  padding:4px 6px;
+  cursor:pointer;
+  font-size:11px;
+  min-width:40px;
+  transition:background-color 0.2s;
+}
+
+.action-notice {
   display:none;
   background:#fef3c7;
   border:1px solid #f59e0b;
@@ -164,18 +237,24 @@ body{
   margin-top:8px;
   text-align:center;
   font-size:11px;
+  animation:fadeIn 0.3s;
 }
 
-.success-notice {
-  display: none;
-  background: #d1fae5;
-  border: 1px solid #10b981;
-  border-radius: 6px;
-  padding: 8px;
-  margin-top: 8px;
-  text-align: center;
-  font-size: 11px;
-  color: #065f46;
+.action-notice.success {
+  background:#d1fae5;
+  border:1px solid #10b981;
+  color:#065f46;
+}
+
+.action-notice.danger {
+  background:#fee2e2;
+  border:1px solid #ef4444;
+  color:#7f1d1d;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(-5px); }
+  to { opacity:1; transform:translateY(0); }
 }
 
 .confirm-dialog {
@@ -189,6 +268,7 @@ body{
   z-index:1000;
   align-items:center;
   justify-content:center;
+  animation:fadeIn 0.3s;
 }
 
 .dialog-content {
@@ -198,11 +278,23 @@ body{
   max-width:350px;
   width:90%;
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  animation:slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
 }
 
 .dialog-content h3 {
   margin:0 0 12px 0;
   font-size:16px;
+}
+
+.dialog-content p {
+  margin:0 0 16px 0;
+  font-size:14px;
+  color:#4b5563;
 }
 
 .dialog-actions {
@@ -292,6 +384,7 @@ td.mono{
   cursor:pointer;
   font-size:16px;
   box-sizing:border-box;
+  transition:background-color 0.2s;
 }
 
 .copy-btn:hover{
@@ -302,6 +395,142 @@ td.mono{
   background:var(--success);
   color:white;
   cursor:default;
+}
+
+/* STYLE UNTUK VIEW UPDATE NIK */
+.update-section {
+  background:var(--card);
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+  width:100%;
+  overflow:hidden;
+}
+
+.update-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+
+.update-header h2 {
+  margin:0;
+  font-size:16px;
+  color:#111827;
+}
+
+.update-controls {
+  display:flex;
+  gap:8px;
+}
+
+.update-table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+}
+
+.update-table th {
+  background:#f8fafc;
+  padding:8px 4px;
+  border-bottom:2px solid var(--border);
+  font-size:11px;
+  color:#4b5563;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.update-table td {
+  padding:4px;
+  border-bottom:1px solid var(--border);
+  font-size:11px;
+  vertical-align:middle;
+  text-align:center;
+}
+
+.update-table .nik-input {
+  font-family:monospace;
+  font-size:11px;
+  width:100%;
+  box-sizing:border-box;
+  padding:5px;
+  text-align:center;
+}
+
+.update-table .action-buttons {
+  display:flex;
+  gap:3px;
+  justify-content:center;
+}
+
+.update-table .copy-btn-update {
+  background:var(--primary);
+  color:white;
+  border:none;
+  border-radius:4px;
+  padding:4px 6px;
+  cursor:pointer;
+  font-size:11px;
+  min-width:40px;
+  transition:background-color 0.2s;
+}
+
+.update-table .add-btn {
+  background:var(--success);
+  color:white;
+  border:none;
+  border-radius:4px;
+  padding:4px 6px;
+  cursor:pointer;
+  font-size:11px;
+  min-width:40px;
+  transition:background-color 0.2s;
+}
+
+.update-table .remove-btn {
+  background:var(--danger);
+  color:white;
+  border:none;
+  border-radius:4px;
+  padding:4px 6px;
+  cursor:pointer;
+  font-size:11px;
+  min-width:40px;
+  transition:background-color 0.2s;
+}
+
+.update-notice {
+  display:none;
+  background:#fef3c7;
+  border:1px solid #f59e0b;
+  border-radius:6px;
+  padding:8px;
+  margin-top:8px;
+  text-align:center;
+  font-size:11px;
+  animation:fadeIn 0.3s;
+}
+
+.update-notice.success {
+  background:#d1fae5;
+  border:1px solid #10b981;
+  color:#065f46;
+}
+
+.update-notice.danger {
+  background:#fee2e2;
+  border:1px solid #ef4444;
+  color:#7f1d1d;
+}
+
+.update-search-box {
+  margin:15px 0;
 }
 
 @media(max-width:600px){
@@ -315,12 +544,31 @@ td.mono{
   }
   
   .sales-table th, 
-  .sales-table td{
+  .sales-table td,
+  .update-table th,
+  .update-table td {
     font-size:10px;
     padding:4px 2px;
   }
   
-  .controls{
+  .sales-table .action-buttons,
+  .update-table .action-buttons {
+    flex-direction:column;
+    gap:2px;
+  }
+  
+  .sales-table .save-btn,
+  .sales-table .delete-btn,
+  .update-table .copy-btn-update,
+  .update-table .add-btn,
+  .update-table .remove-btn {
+    min-width:30px;
+    padding:3px 4px;
+    font-size:9px;
+  }
+  
+  .controls,
+  .update-controls{
     flex-wrap:wrap;
   }
   
@@ -329,27 +577,32 @@ td.mono{
     padding:4px 8px;
   }
   
-  .input-field{
+  .input-field,
+  .nik-input{
     font-size:10px; 
     padding:4px 4px;
   }
   
-  .sales-table .number-input{
+  .sales-table .number-input,
+  .update-table .nik-input{
     font-size:9px;
   }
   
-  .sales-table .save-btn{
-    font-size:9px; 
-    padding:3px 4px;
-  }
-  
-  .sales-section{
+  .sales-section,
+  .update-section{
     padding:12px;
   }
   
-  .success-notice {
+  .action-notice,
+  .update-notice {
     font-size:10px;
     padding:6px;
+  }
+  
+  .switch-btn {
+    min-width:50px;
+    font-size:16px;
+    padding:6px 8px;
   }
 }
 </style>
@@ -358,76 +611,135 @@ td.mono{
 <body>
 <div class="container">
 
-  <div class="header">
-    <h1>NIK GAS LPG</h1>
+  <!-- HEADER DENGAN TOMBOL SWITCH -->
+  <div class="header" id="mainHeader">
+    <div class="header-content">
+      <h1 id="headerTitle">NIK GAS LPG</h1>
+      <button class="switch-btn" onclick="switchView()">⇆</button>
+    </div>
   </div>
 
-  <!-- FITUR CATATAN PENJUALAN -->
-  <div class="sales-section">
-    <div class="sales-header">
-      <h2>📝 CATATAN PENJUALAN</h2>
-      <div class="controls">
-        <button class="btn btn-warning" onclick="showResetDialog()">Reset</button>
+  <!-- ==================== VIEW 1: NIK GAS LPG ==================== -->
+  <div id="viewNik" class="view-nik">
+    
+    <!-- FITUR CATATAN PENJUALAN -->
+    <div class="sales-section">
+      <div class="sales-header">
+        <h2>📝 CATATAN PENJUALAN</h2>
+        <div class="controls">
+          <button class="btn btn-warning" onclick="showResetDialog()">Reset</button>
+        </div>
+      </div>
+      
+      <div class="action-notice" id="actionNotice"></div>
+      
+      <table class="sales-table">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th>AWAL</th>
+            <th>AKHIR</th>
+            <th>AKSI</th>
+            <th>KETERANGAN</th>
+          </tr>
+        </thead>
+        <tbody id="salesTable">
+          <!-- Data akan diisi oleh JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Cari NIK / No..." onkeyup="searchTable()">
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span>Total</span>
+        <strong id="total">0</strong>
+      </div>
+      <div class="stat">
+        <span>Tersalin</span>
+        <strong id="copied">0</strong>
+      </div>
+      <div class="stat">
+        <span>Belum</span>
+        <strong id="remain">0</strong>
       </div>
     </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th width="50">No</th>
+            <th>NIK (16 Digit)</th>
+            <th width="80">Salin</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ==================== VIEW 2: UPDATE NIK ==================== -->
+  <div id="viewUpdate" class="view-update">
     
-    <div class="undo-notice" id="undoNotice">
-      Data telah direset! <button onclick="undoReset()" class="btn" style="padding:2px 6px; margin-left:8px; font-size:10px;">↶ Batalkan</button>
+    <!-- FITUR UPDATE NIK -->
+    <div class="update-section">
+      <div class="update-header">
+        <h2>✏️ UPDATE NIK</h2>
+        <div class="update-controls">
+          <button class="btn btn-success" onclick="addUpdateRow()">+ Tambah Baris</button>
+          <button class="btn btn-danger" onclick="clearAllUpdateNIK()">Hapus Semua</button>
+        </div>
+      </div>
+      
+      <div class="update-notice" id="updateNotice"></div>
+      
+      <div class="update-search-box">
+        <input type="text" id="updateSearch" placeholder="Cari NIK / No..." onkeyup="searchUpdateTable()">
+      </div>
+      
+      <div class="stats">
+        <div class="stat">
+          <span>Total NIK</span>
+          <strong id="updateTotal">0</strong>
+        </div>
+        <div class="stat">
+          <span>Tersalin</span>
+          <strong id="updateCopied">0</strong>
+        </div>
+        <div class="stat">
+          <span>Kosong</span>
+          <strong id="updateEmpty">0</strong>
+        </div>
+      </div>
+      
+      <div class="table-wrap">
+        <table class="update-table">
+          <thead>
+            <tr>
+              <th width="50">No</th>
+              <th>NIK (16 Digit)</th>
+              <th width="120">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="updateTbody">
+            <!-- Data akan diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div style="margin-top:15px; text-align:center;">
+        <button class="btn btn-primary" onclick="addUpdateRow()" style="padding:8px 20px;">+ Tambah Baris NIK</button>
+      </div>
     </div>
-    
-    <div class="success-notice" id="successNotice">
-      BERHASIL disimpan!
-    </div>
-    
-    <table class="sales-table">
-      <thead>
-        <tr>
-          <th>NO</th>
-          <th>NOMOR AWAL</th>
-          <th>NOMOR AKHIR</th>
-          <th>SAVE</th>
-          <th>KETERANGAN</th>
-        </tr>
-      </thead>
-      <tbody id="salesTable">
-        <!-- Data akan diisi oleh JavaScript -->
-      </tbody>
-    </table>
+
   </div>
 
-  <div class="search-box">
-    <input type="text" id="search" placeholder="Cari NIK / No..." onkeyup="searchTable()">
-  </div>
-
-  <div class="stats">
-    <div class="stat">
-      <span>Total</span>
-      <strong id="total">0</strong>
-    </div>
-    <div class="stat">
-      <span>Tersalin</span>
-      <strong id="copied">0</strong>
-    </div>
-    <div class="stat">
-      <span>Belum</span>
-      <strong id="remain">0</strong>
-    </div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th width="50">No</th>
-          <th>NIK (16 Digit)</th>
-          <th width="80">Salin</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-
-  <!-- Dialog Konfirmasi Reset -->
+  <!-- Dialog Konfirmasi Reset (untuk View 1) -->
   <div class="confirm-dialog" id="confirmDialog">
     <div class="dialog-content">
       <h3>Konfirmasi Reset</h3>
@@ -439,107 +751,168 @@ td.mono{
     </div>
   </div>
 
+  <!-- Dialog Konfirmasi Aksi (untuk View 1) -->
+  <div class="confirm-dialog" id="actionDialog">
+    <div class="dialog-content">
+      <h3 id="actionDialogTitle">Konfirmasi</h3>
+      <p id="actionDialogMessage" style="font-size:14px;"></p>
+      <div class="dialog-actions">
+        <button class="btn" onclick="hideActionDialog()" style="font-size:12px;">Batal</button>
+        <button class="btn" id="actionDialogConfirmBtn" style="font-size:12px;">Konfirmasi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Konfirmasi Hapus Semua (untuk View 2) -->
+  <div class="confirm-dialog" id="updateConfirmDialog">
+    <div class="dialog-content">
+      <h3>Konfirmasi Hapus</h3>
+      <p style="font-size:14px;">Apakah Anda yakin ingin menghapus semua NIK?</p>
+      <div class="dialog-actions">
+        <button class="btn" onclick="hideUpdateDialog()" style="font-size:12px;">Batal</button>
+        <button class="btn btn-danger" onclick="confirmClearAllUpdateNIK()" style="font-size:12px;">Ya, Hapus Semua</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-// DATA NIK BARU SESUAI PERMINTAAN
+// ==================== VARIABEL GLOBAL ====================
+let currentView = 'nik'; // 'nik' atau 'update'
+
+// ==================== VIEW 1: NIK GAS LPG ====================
+
+// DATA NIK (daftar baru yang diberikan)
 const nikList = [
-"1214021203620002","1214026508690001","1214020607000012","1214021507040005",
-"1214021710660001","1214021001890011","1214026809870002","1278011406760002",
-"1278014804800001","1278015009000001","1214020504920004","1214020704650004",
-"1214024706750015","1214024105990010","1214021610010007","1214020704790004",
-"1214027003850003","1214022109710002","1214021205010001","1214023110030004",
-"1214026512040001","1214020804640004","1214025003700006","1214020704960010",
-"1214021602020007","1214026306050007","1214021209730001","1214027107000001",
-"1214026602050001","1214021706070001","1214021011030004","1214025201070004",
-"1214025502080001","1271070610940002","1214021110950011","1214020505000009",
-"1214020403020007","1214021003040003","1214025409920003","1214024110030002",
-"1214020606050003","1214025203800008","1214020408720003","1214025703790002",
-"1214021909990010","1214022806050001","1214020112740003","1214025008800005",
-"1214021011800009","1214024512790005","1214026804930001","1214020912980004",
-"1214024703030008","1214251208000001","1214025203700005","1214024307970004",
-"1214020505070008","1214021709960009","1214021005760010","1214026606860001",
-"1214030908780004","1214036103750001","1204015402890009","1214025911720001",
-"1214022204070003","1214171212900004","1214031709960002","1214023103880001",
-"1214026104930001","1214025607930005","1214025107950009","1214023007980003",
-"1214024404020015","1214020607820009","1214025808080002","1214022801790001",
-"1214021912000001","1214020202030001","1214026108950005","1214027003490001",
-"1214026402830001","1503082512740003","1503085708740002","1503084811000002",
-"1503082102040001","1503085811070001","1214020405790004","1214024609800009",
-"1214024811000007","1214024908030001","1214021611060001","1214021305590003",
-"1214025207670001","1214024810980005","1214025210030003","1214025502050001",
-"1204235406880001","1214021509020007","1214024806530003","1214020305930011",
-"1214025204980003","1214020406580002","1214024803580003","1214026705940004",
-"1214021004940016","1214024210980001","1214021703830003","1214020404600004",
-"1214020305900004","1214020607060009","1214022211870002","1214020612840002",
-"1214026302890002","1214020801300002","1214025502350002","1214025502030005",
-"1214024812070002","1214026509780001","1214024512040001","1214020501080001",
-"1214025007620003","1214021203930005","1214025304980005","1214021202040004",
-"1214024107550005","1214022106970003","1214020908040002","1214021208060004",
-"1214032309920001","1214032006010001","1214021009860006","1214064802870003",
-"1214032411930004","1204264111940001","1214030204680001","1214036308710001",
-"1214036604980004","1214031702070002","1214020309880008","1214024506880010",
-"1214022705080002","1214021703870006","1214026510880002","1214024412080002",
-"1214023011830001","1214024508920003","1214020803000009","1214024206060005",
-"1214250209920001","1214175109960002","1214024302900008","1214020506900014",
-"1214022406760002","1214026406770001","1214025603040003","1214022510870003",
-"1214174910900003","1214021305880003","1214026805910001","1214020105820003",
-"1214024202910001","1214020601900009","1214024505930006","1214020503970011",
-"1214025705990009","1214020704040001","1214023112060001","1214025002600005",
-"1214020411840005","1214022910870001","1214021807980010","1214024207990011",
-"1214021907010003","1214020208030005","1214024109060005","1214345604920001",
-"1214021005730004","1214025106750005","1214021506790003","1214024709800008",
-"1214020907000008","1214024204030006","1214020608060004","1214021402080002",
-"1214026906940001","1214020601910004","1214025505910004","1214025512080001",
-"1214021408910002","1214176912920001","1214350804990001","1214020507870004",
-"1214064909910004","1204051708890003","1214024606950007","1214021206900010",
-"1214024405940006","1214020307920011","1214026205950005","1801041008870019",
-"1214354701950001","1214021212900001","1214025804940004","1214021701940002",
-"1214020408880008","1214025204900003","1214022512910007","1214021608910004",
-"1214036808920003","1214021808890005"
+"1214021203620002","1214026508690001","1214020607000012","1214021710660001",
+"1214021001890011","1214026809870002","1278011406760002","1278014804800001",
+"1278015009000001","1214020504920004","1214020704650004","1214024706750015",
+"1214024105990010","1214021610010007","1214020704790004","1214027003850003",
+"1214022109710002","1214021205010001","1214023110030004","1214026512040001",
+"1214020804640004","1214025003700006","1214020704960010","1214021602020007",
+"1214026306050007","1214021209730001","1214027107000001","1214026602050001",
+"1214021706070001","1214021011030004","1214025201070004","1214025502080001",
+"1271070610940002","1214021110950011","1214020505000009","1214020403020007",
+"1214021003040003","1214025409920003","1214024110030002","1214020606050003",
+"1214025203800008","1214020408720003","1214025703790002","1214021909990010",
+"1214022806050001","1214020112740003","1214025008800005","1214021011800009",
+"1214024512790005","1214026804930001","1214020912980004","1214024703030008",
+"1214251208000001","1214025203700005","1214024307970004","1214020505070008",
+"1214021709960009","1214021005760010","1214026606860001","1214030908780004",
+"1214036103750001","1204015402890009","1214025911720001","1214022204070003",
+"1214171212900004","1214031709960002","1214023103880001","1214026104930001",
+"1214025607930005","1214025107950009","1214023007980003","1214024404020015",
+"1214020607820009","1214025808080002","1214022801790001","1214021912000001",
+"1214020202030001","1214026108950005","1214027003490001","1214026402830001",
+"1503082512740003","1503085708740002","1503084811000002","1503082102040001",
+"1503085811070001","1214020405790004","1214024609800009","1214024811000007",
+"1214024908030001","1214021611060001","1214021305590003","1214025207670001",
+"1214024810980005","1214025210030003","1214025502050001","1204235406880001",
+"1214021509020007","1214020305930011","1214025204980003","1214020406580002",
+"1214024803580003","1214026705940004","1214021004940016","1214024210980001",
+"1214021703830003","1214020404600004","1214020305900004","1214020607060009",
+"1214022211870002","1214020612840002","1214026302890002","1214020801300002",
+"1214025502350002","1214025502030005","1214024812070002","1214026509780001",
+"1214024512040001","1214020501080001","1214025007620003","1214021203930005",
+"1214025304980005","1214021202040004","1214024107550005","1214022106970003",
+"1214020908040002","1214021208060004","1214032309920001","1214032006010001",
+"1214021009860006","1214064802870003","1214032411930004","1204264111940001",
+"1214030204680001","1214036308710001","1214036604980004","1214031702070002",
+"1214020309880008","1214024506880010","1214022705080002","1214021703870006",
+"1214026510880002","1214024412080002","1214023011830001","1214024508920003",
+"1214020803000009","1214024206060005","1214250209920001","1214175109960002",
+"1214024302900008","1214020506900014","1214022406760002","1214026406770001",
+"1214025603040003","1214022510870003","1214174910900003","1214021305880003",
+"1214026805910001","1214020105820003","1214024202910001","1214020601900009",
+"1214024505930006","1214020503970011","1214025705990009","1214020704040001",
+"1214023112060001","1214025002600005","1214020411840005","1214022910870001",
+"1214021807980010","1214024207990011","1214021907010003","1214020208030005",
+"1214024109060005","1214345604920001","1214021005730004","1214025106750005",
+"1214021506790003","1214024709800008","1214020907000008","1214024204030006",
+"1214020608060004","1214021402080002","1214026906940001","1214020601910004",
+"1214025505910004","1214025512080001","1214021408910002","1214176912920001",
+"1214350804990001","1214020507870004","1214064909910004","1204051708890003",
+"1214024606950007","1214021206900010","1214024405940006","1214020307920011",
+"1214026205950005","1801041008870019","1214354701950001","1214021212900001",
+"1214025804940004","1214021701940002","1214020408880008","1214025204900003",
+"1214022512910007","1214021608910004","1214036808920003","1214021808890005",
+"1214025501970009","1214021607880007","1214085303930007","1214025404780006",
+"1214026905020001","1214022905030004","1214022507040005","1214090203870001",
+"1214024406930006","1214024504720006","1214024708010009","1214025002990002",
+"1214022303000001","1214022304030002","1214021206810004","1214025404780001",
+"1214022501960003","1214026006630001","1214275505850001","1214021904790003",
+"1214276903860001","1214022307970001","1214275911980001","1214270909000002",
+"1214020904030001","1214024710040002","1214022109650001","1214025011660003",
+"1214022210930002","1214022306990005","1214025307010004","1214024903030013",
+"1214021102060003","1214276003080001","1214021201780006","1214025005740007",
+"1214027004010005","1214024402020007","1214020607040009","1214024409060004",
+"1214021706990006","1214024502990008","1214270512980001","1214024712020004",
+"1214020108920002","1214024303990007","1214020704670003","1214023101870002",
+  "1214021406960005","1214030706600001","1214275112910001","1214034905880004",
+"1214022404940003","1214025102000009","1214022101890004","1214027005940002",
+"1214020510670008","1214014109890004","1214020107530007","1214024707700008",
+"1214020104760002","1214022001920001","1214025006960012","1214026002020015",
+"1214024608770001","1214024707780004","1214022406820001","1214025507850006",
+"1214025505560003","1214024309880005","1214020604630002","1214022510950004",
+"1214274802960001","1214025903540001","1214024903710001","1214276606060001",
+"1214274601020001","1214020806060001","1214022707060002","1214025002980002",
+"1204254210890001","1214026005990007","1214271104070001","1214275111870001",
+"1214276406060001","1214271007870001","1214270511070001","1214022102060002",
+"1214020501960009","1214066007990009","1214025212000009","1214026509030001"
 ];
 
-// ======================== FUNGSI UTAMA TABEL NIK ========================
-const tbody = document.getElementById("tbody");
-let copiedCount = 0;
+// Fungsi untuk inisialisasi View 1
+function initNikView() {
+  const tbody = document.getElementById("tbody");
+  let copiedCount = 0;
+  
+  // Reset isi tbody
+  tbody.innerHTML = '';
+  
+  // Update statistik
+  document.getElementById("total").textContent = nikList.length;
+  document.getElementById("remain").textContent = nikList.length;
+  
+  // Render tabel NIK
+  nikList.forEach((nik,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td class="mono">${nik}</td>
+      <td><button class="copy-btn">⎘</button></td>
+    `;
+    
+    const btn = tr.querySelector("button");
+    btn.onclick = ()=>{
+      const ta = document.createElement("textarea");
+      ta.value = nik;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      
+      btn.textContent = "✓";
+      btn.classList.add("copied");
+      btn.disabled = true;
+      
+      copiedCount++;
+      document.getElementById("copied").textContent = copiedCount;
+      document.getElementById("remain").textContent = nikList.length - copiedCount;
+    };
+    
+    tbody.appendChild(tr);
+  });
+  
+  // Inisialisasi fitur catatan penjualan
+  renderSalesTable();
+}
 
-document.getElementById("total").textContent = nikList.length;
-document.getElementById("remain").textContent = nikList.length;
-
-nikList.forEach((nik,i)=>{
-  const tr = document.createElement("tr");
-  tr.innerHTML = `
-    <td>${i+1}</td>
-    <td class="mono">${nik}</td>
-    <td><button class="copy-btn">⎘</button></td>
-  `;
-
-  const btn = tr.querySelector("button");
-  btn.onclick = ()=>{
-    const ta = document.createElement("textarea");
-    ta.value = nik;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-
-    btn.textContent = "✓";
-    btn.classList.add("copied");
-    btn.disabled = true;
-
-    copiedCount++;
-    document.getElementById("copied").textContent = copiedCount;
-    document.getElementById("remain").textContent = nikList.length - copiedCount;
-  };
-
-  tbody.appendChild(tr);
-});
-
-// 🔍 SEARCH FUNCTION
+// 🔍 SEARCH FUNCTION untuk View 1
 function searchTable(){
   const keyword = document.getElementById("search").value.toLowerCase();
-  const rows = tbody.querySelectorAll("tr");
-
+  const rows = document.querySelectorAll("#tbody tr");
+  
   rows.forEach(row=>{
     const no = row.cells[0].textContent;
     const nik = row.cells[1].textContent;
@@ -549,23 +922,24 @@ function searchTable(){
   });
 }
 
-// ======================== FITUR CATATAN PENJUALAN ========================
-let salesBackup = null; // Untuk undo
+// ==================== FITUR CATATAN PENJUALAN (View 1) ====================
+let salesBackup = null;
+let pendingAction = null;
 
-// Data default untuk 3 pesanan
+// Data default untuk 4 pesanan
 const defaultSalesData = [
   { id: 1, start: "", end: "", updated: "" },
   { id: 2, start: "", end: "", updated: "" },
-  { id: 3, start: "", end: "", updated: "" }
+  { id: 3, start: "", end: "", updated: "" },
+  { id: 4, start: "", end: "", updated: "" }
 ];
 
 // Format tanggal ke DD/MM
 function formatDateToDDMM(dateString) {
-  if (!dateString) return '-';
-  // dateString format: "DD/MM/YYYY HH:MM"
-  const parts = dateString.split(' ')[0].split('/'); // Ambil bagian tanggal saja
+  if (!dateString) return '';
+  const parts = dateString.split(' ')[0].split('/');
   if (parts.length >= 2) {
-    return `${parts[0]}/${parts[1]}`; // DD/MM
+    return `${parts[0]}/${parts[1]}`;
   }
   return dateString;
 }
@@ -581,6 +955,30 @@ function saveSalesData(data) {
   localStorage.setItem('salesData', JSON.stringify(data));
 }
 
+// Tampilkan notifikasi aksi
+function showActionNotice(message, type = 'success', showUndo = false) {
+  const notice = document.getElementById('actionNotice');
+  notice.textContent = message;
+  notice.className = 'action-notice ' + type;
+  notice.style.display = 'block';
+  
+  if (showUndo) {
+    const undoBtn = document.createElement('button');
+    undoBtn.className = 'btn';
+    undoBtn.style.cssText = 'padding:2px 6px; margin-left:8px; font-size:10px; background:#f59e0b; color:white;';
+    undoBtn.textContent = '↶ Batalkan';
+    undoBtn.onclick = undoLastAction;
+    notice.appendChild(undoBtn);
+  }
+  
+  if (!showUndo) {
+    setTimeout(() => {
+      notice.style.display = 'none';
+      notice.innerHTML = '';
+    }, 3000);
+  }
+}
+
 // Render tabel penjualan
 function renderSalesTable() {
   const salesData = loadSalesData();
@@ -589,99 +987,383 @@ function renderSalesTable() {
   table.innerHTML = salesData.map(item => `
     <tr>
       <td style="font-weight:bold;">${item.id}</td>
-      <td><input type="text" class="input-field number-input" id="start${item.id}" value="${item.start}" placeholder="1214..." maxlength="16"></td>
-      <td><input type="text" class="input-field number-input" id="end${item.id}" value="${item.end}" placeholder="1214..." maxlength="16"></td>
-      <td><button class="save-btn" onclick="updateSale(${item.id})">✓</button></td>
-      <td class="mono" style="font-size:10px;">${item.updated ? formatDateToDDMM(item.updated) : '-'}</td>
+      <td><input type="text" class="input-field number-input" id="start${item.id}" value="${item.start}" placeholder="Nomor awal" maxlength="20"></td>
+      <td><input type="text" class="input-field number-input" id="end${item.id}" value="${item.end}" placeholder="Nomor akhir" maxlength="20"></td>
+      <td>
+        <div class="action-buttons">
+          <button class="save-btn" onclick="confirmSave(${item.id})">✓ Simpan</button>
+          <button class="delete-btn" onclick="confirmDelete(${item.id})">✕ Hapus</button>
+        </div>
+      </td>
+      <td class="mono" style="font-size:10px;">${item.updated ? formatDateToDDMM(item.updated) : ''}</td>
     </tr>
   `).join('');
 }
 
-// Update satu pesanan
-function updateSale(id) {
+// Tampilkan dialog konfirmasi untuk save - DIPERBAIKI
+function confirmSave(id) {
   const startInput = document.getElementById(`start${id}`);
-  const endInput = document.getElementById(`end${id}`);
+  const endInput = document.getElementById(`end${id}`); // DIPERBAIKI: menggunakan id bukan item.id
+  const start = startInput.value.trim();
+  const end = endInput.value.trim();
   
-  if (!startInput || !endInput) {
-    console.error('Input tidak ditemukan untuk ID:', id);
+  if (!start && !end) {
+    showActionNotice('Tidak ada data untuk disimpan', 'warning');
     return;
   }
   
+  salesBackup = loadSalesData();
+  pendingAction = { type: 'save', id: id };
+  
+  document.getElementById('actionDialogTitle').textContent = 'Konfirmasi Simpan';
+  document.getElementById('actionDialogMessage').textContent = `Simpan data untuk pesanan ${id}?`;
+  document.getElementById('actionDialogConfirmBtn').textContent = 'Simpan';
+  document.getElementById('actionDialogConfirmBtn').className = 'btn btn-primary';
+  document.getElementById('actionDialogConfirmBtn').onclick = function() {
+    saveSalesDataItem(id);
+    hideActionDialog();
+  };
+  
+  document.getElementById('actionDialog').style.display = 'flex';
+}
+
+// Simpan data item penjualan
+function saveSalesDataItem(id) {
+  const salesData = loadSalesData();
+  const startInput = document.getElementById(`start${id}`);
+  const endInput = document.getElementById(`end${id}`);
   const start = startInput.value.trim();
   const end = endInput.value.trim();
-  const now = new Date();
-  const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   
+  // TIDAK ADA VALIDASI 16 DIGIT - untuk catatan nomor urut
+  
+  // Update data
+  const index = salesData.findIndex(item => item.id === id);
+  if (index !== -1) {
+    salesData[index].start = start;
+    salesData[index].end = end;
+    salesData[index].updated = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID').slice(0,5);
+  }
+  
+  saveSalesData(salesData);
+  renderSalesTable();
+  showActionNotice(`Data pesanan ${id} berhasil disimpan`, 'success', true);
+}
+
+// Tampilkan dialog konfirmasi untuk delete
+function confirmDelete(id) {
+  salesBackup = loadSalesData();
+  pendingAction = { type: 'delete', id: id };
+  
+  document.getElementById('actionDialogTitle').textContent = 'Konfirmasi Hapus';
+  document.getElementById('actionDialogMessage').textContent = `Hapus data untuk pesanan ${id}?`;
+  document.getElementById('actionDialogConfirmBtn').textContent = 'Hapus';
+  document.getElementById('actionDialogConfirmBtn').className = 'btn btn-danger';
+  document.getElementById('actionDialogConfirmBtn').onclick = function() {
+    deleteSalesDataItem(id);
+    hideActionDialog();
+  };
+  
+  document.getElementById('actionDialog').style.display = 'flex';
+}
+
+// Hapus data item penjualan
+function deleteSalesDataItem(id) {
   const salesData = loadSalesData();
   const index = salesData.findIndex(item => item.id === id);
   
   if (index !== -1) {
-    salesData[index] = {
-      ...salesData[index],
-      start: start,
-      end: end,
-      updated: formattedDate
-    };
-    
-    saveSalesData(salesData);
+    salesData[index].start = '';
+    salesData[index].end = '';
+    salesData[index].updated = '';
+  }
+  
+  saveSalesData(salesData);
+  renderSalesTable();
+  showActionNotice(`Data pesanan ${id} berhasil dihapus`, 'success', true);
+}
+
+// Batalkan aksi terakhir
+function undoLastAction() {
+  if (salesBackup && pendingAction) {
+    saveSalesData(salesBackup);
     renderSalesTable();
-    
-    // Tampilkan notifikasi berhasil
-    const successNotice = document.getElementById('successNotice');
-    successNotice.style.display = 'block';
-    setTimeout(() => {
-      successNotice.style.display = 'none';
-    }, 2000);
+    showActionNotice('Aksi dibatalkan', 'warning');
+    salesBackup = null;
+    pendingAction = null;
   }
 }
 
-// Tampilkan dialog konfirmasi reset
+// Tampilkan dialog reset
 function showResetDialog() {
-  salesBackup = loadSalesData(); // Backup data sebelum reset
   document.getElementById('confirmDialog').style.display = 'flex';
 }
 
-// Sembunyikan dialog
+// Sembunyikan dialog reset
 function hideResetDialog() {
   document.getElementById('confirmDialog').style.display = 'none';
 }
 
-// Reset semua data penjualan
+// Reset data penjualan
 function resetSalesData() {
   saveSalesData(defaultSalesData);
   renderSalesTable();
+  showActionNotice('Semua data penjualan telah direset', 'success');
   hideResetDialog();
-  
-  // Tampilkan notifikasi undo
-  const undoNotice = document.getElementById('undoNotice');
-  undoNotice.style.display = 'block';
-  
-  // Sembunyikan notifikasi setelah 15 detik
-  setTimeout(() => {
-    undoNotice.style.display = 'none';
-    salesBackup = null; // Hapus backup setelah timeout
-  }, 15000);
 }
 
-// Batalkan reset (undo)
-function undoReset() {
-  if (salesBackup) {
-    saveSalesData(salesBackup);
-    renderSalesTable();
-    document.getElementById('undoNotice').style.display = 'none';
-    salesBackup = null;
+// Sembunyikan dialog aksi
+function hideActionDialog() {
+  document.getElementById('actionDialog').style.display = 'none';
+}
+
+// ==================== VIEW 2: UPDATE NIK ====================
+
+// Fungsi untuk inisialisasi View 2
+function initUpdateView() {
+  renderUpdateTable();
+  updateStats();
+}
+
+// Muat data update NIK dari localStorage
+function loadUpdateNIK() {
+  const saved = localStorage.getItem('updateNIK');
+  if (saved) {
+    return JSON.parse(saved);
+  } else {
+    // Buat data awal dengan 10 baris kosong
+    const initialData = [];
+    for (let i = 1; i <= 10; i++) {
+      initialData.push({ id: i, nik: '', copied: false });
+    }
+    return initialData;
   }
 }
 
-// Inisialisasi saat halaman dimuat
-window.onload = function() {
-  renderSalesTable();
+// Simpan data update NIK ke localStorage
+function saveUpdateNIK(data) {
+  localStorage.setItem('updateNIK', JSON.stringify(data));
+}
+
+// Render tabel update NIK
+function renderUpdateTable() {
+  const updateData = loadUpdateNIK();
+  const table = document.getElementById('updateTbody');
   
-  // Tutup dialog jika klik di luar
-  document.getElementById('confirmDialog').addEventListener('click', function(e) {
-    if (e.target === this) hideResetDialog();
+  table.innerHTML = updateData.map(item => `
+    <tr>
+      <td style="font-weight:bold;">${item.id}</td>
+      <td><input type="text" class="nik-input" id="nik${item.id}" value="${item.nik}" placeholder="Masukkan 16 digit NIK" maxlength="16" oninput="validateNIKInput(${item.id})"></td>
+      <td>
+        <div class="action-buttons">
+          <button class="copy-btn-update" onclick="copyUpdateNIK(${item.id})" ${item.nik ? '' : 'disabled'}>⎘ Salin</button>
+          <button class="remove-btn" onclick="removeUpdateRow(${item.id})">✕ Hapus</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  
+  updateStats();
+}
+
+// Tambah baris baru
+function addUpdateRow() {
+  const updateData = loadUpdateNIK();
+  const newId = updateData.length > 0 ? updateData[updateData.length - 1].id + 1 : 1;
+  updateData.push({ id: newId, nik: '', copied: false });
+  saveUpdateNIK(updateData);
+  renderUpdateTable();
+  showUpdateNotice('Baris baru berhasil ditambahkan', 'success');
+}
+
+// Hapus baris
+function removeUpdateRow(id) {
+  const updateData = loadUpdateNIK();
+  if (updateData.length <= 1) {
+    showUpdateNotice('Minimal harus ada 1 baris', 'danger');
+    return;
+  }
+  
+  const index = updateData.findIndex(item => item.id === id);
+  if (index !== -1) {
+    updateData.splice(index, 1);
+    // Perbarui ID agar berurutan
+    updateData.forEach((item, idx) => {
+      item.id = idx + 1;
+    });
+    saveUpdateNIK(updateData);
+    renderUpdateTable();
+    showUpdateNotice('Baris berhasil dihapus', 'success');
+  }
+}
+
+// Salin NIK pada view update
+function copyUpdateNIK(id) {
+  const input = document.getElementById(`nik${id}`);
+  const nik = input.value.trim();
+  
+  if (!nik) {
+    showUpdateNotice('NIK kosong, tidak bisa disalin', 'danger');
+    return;
+  }
+  
+  if (nik.length !== 16) {
+    showUpdateNotice('NIK harus 16 digit', 'danger');
+    return;
+  }
+  
+  const ta = document.createElement("textarea");
+  ta.value = nik;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+  
+  // Update status copied
+  const updateData = loadUpdateNIK();
+  const index = updateData.findIndex(item => item.id === id);
+  if (index !== -1) {
+    updateData[index].copied = true;
+    saveUpdateNIK(updateData);
+  }
+  
+  // Update tampilan tombol
+  const btn = input.parentElement.nextElementSibling.querySelector('.copy-btn-update');
+  btn.textContent = "✓ Tersalin";
+  btn.disabled = true;
+  btn.style.background = 'var(--success)';
+  
+  updateStats();
+  showUpdateNotice(`NIK ${nik} berhasil disalin`, 'success');
+}
+
+// Validasi input NIK
+function validateNIKInput(id) {
+  const input = document.getElementById(`nik${id}`);
+  let value = input.value;
+  
+  // Hanya izinkan angka
+  value = value.replace(/\D/g, '');
+  
+  // Batasi panjang maksimal 16 digit
+  if (value.length > 16) {
+    value = value.substring(0, 16);
+  }
+  
+  input.value = value;
+  
+  // Update data
+  const updateData = loadUpdateNIK();
+  const index = updateData.findIndex(item => item.id === id);
+  if (index !== -1) {
+    updateData[index].nik = value;
+    updateData[index].copied = false;
+    saveUpdateNIK(updateData);
+    
+    // Reset tombol salin
+    const btn = input.parentElement.nextElementSibling.querySelector('.copy-btn-update');
+    if (btn) {
+      btn.textContent = "⎘ Salin";
+      btn.disabled = value.length !== 16;
+      btn.style.background = value.length === 16 ? 'var(--primary)' : '#ccc';
+    }
+  }
+  
+  updateStats();
+}
+
+// Tampilkan notifikasi update
+function showUpdateNotice(message, type = 'success') {
+  const notice = document.getElementById('updateNotice');
+  notice.textContent = message;
+  notice.className = 'update-notice ' + type;
+  notice.style.display = 'block';
+  
+  setTimeout(() => {
+    notice.style.display = 'none';
+  }, 3000);
+}
+
+// Update statistik view update
+function updateStats() {
+  const updateData = loadUpdateNIK();
+  const total = updateData.length;
+  const copied = updateData.filter(item => item.copied).length;
+  const empty = updateData.filter(item => !item.nik).length;
+  
+  document.getElementById('updateTotal').textContent = total;
+  document.getElementById('updateCopied').textContent = copied;
+  document.getElementById('updateEmpty').textContent = empty;
+}
+
+// Cari pada tabel update
+function searchUpdateTable() {
+  const keyword = document.getElementById('updateSearch').value.toLowerCase();
+  const rows = document.querySelectorAll('#updateTbody tr');
+  
+  rows.forEach(row => {
+    const no = row.cells[0].textContent;
+    const nikInput = row.querySelector('.nik-input');
+    const nik = nikInput ? nikInput.value : '';
+    row.style.display =
+      no.includes(keyword) || nik.includes(keyword)
+      ? "" : "none";
   });
-};
+}
+
+// Tampilkan dialog konfirmasi hapus semua
+function clearAllUpdateNIK() {
+  document.getElementById('updateConfirmDialog').style.display = 'flex';
+}
+
+// Sembunyikan dialog update
+function hideUpdateDialog() {
+  document.getElementById('updateConfirmDialog').style.display = 'none';
+}
+
+// Konfirmasi hapus semua NIK
+function confirmClearAllUpdateNIK() {
+  // Reset ke 10 baris kosong
+  const resetData = [];
+  for (let i = 1; i <= 10; i++) {
+    resetData.push({ id: i, nik: '', copied: false });
+  }
+  saveUpdateNIK(resetData);
+  renderUpdateTable();
+  showUpdateNotice('Semua NIK telah dihapus', 'success');
+  hideUpdateDialog();
+}
+
+// ==================== FUNGSI SWITCH VIEW ====================
+function switchView() {
+  const viewNik = document.getElementById('viewNik');
+  const viewUpdate = document.getElementById('viewUpdate');
+  const headerTitle = document.getElementById('headerTitle');
+  const mainHeader = document.getElementById('mainHeader');
+  
+  if (currentView === 'nik') {
+    // Switch ke view update
+    viewNik.style.display = 'none';
+    viewUpdate.style.display = 'block';
+    headerTitle.textContent = 'UPDATE NIK';
+    mainHeader.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+    currentView = 'update';
+    initUpdateView();
+  } else {
+    // Switch ke view nik
+    viewNik.style.display = 'block';
+    viewUpdate.style.display = 'none';
+    headerTitle.textContent = 'NIK GAS LPG';
+    mainHeader.style.background = 'linear-gradient(135deg, #2563eb, #1e40af)';
+    currentView = 'nik';
+    initNikView();
+  }
+}
+
+// ==================== INISIALISASI APLIKASI ====================
+document.addEventListener('DOMContentLoaded', function() {
+  initNikView();
+});
 </script>
 </body>
 </html>
